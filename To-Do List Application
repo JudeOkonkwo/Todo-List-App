@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo-List</title>
+    <style>
+        /* CSS styles */
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        .completed {
+            text-decoration: line-through;
+        }
+        button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        /* Change cursor to hand when hovering over buttons */
+        button:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- HTML Structure -->
+    <input type="text" id="taskInput" placeholder="Enter task...">
+    <input type="datetime-local" id="dueDateInput">
+    <button id="addTaskButton">Add Task</button>
+    <ul id="taskList"></ul>
+    <h1>WELCOME TO THE TO-DO LIST APP</h1>
+
+    <!-- JavaScript -->
+    <script>
+        // Function to add a new task
+        function addTask(taskText, dueDate) {
+            const li = document.createElement('li');
+            li.textContent = taskText;
+
+            if (dueDate) {
+                const dueDateElement = document.createElement('span');
+                dueDateElement.textContent = ' - Due: ' + dueDate;
+                li.appendChild(dueDateElement);
+            }
+
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'Remove';
+            removeButton.addEventListener('click', function() {
+                li.remove();
+            });
+
+            const completeButton = document.createElement('button');
+            completeButton.textContent = 'Complete';
+            completeButton.addEventListener('click', function() {
+                li.classList.toggle('completed');
+            });
+
+            li.appendChild(completeButton);
+            li.appendChild(removeButton);
+            taskList.appendChild(li);
+        }
+
+        // Add task when clicking the button
+        const addTaskButton = document.getElementById('addTaskButton');
+        addTaskButton.addEventListener('click', function() {
+            const taskInput = document.getElementById('taskInput');
+            const dueDateInput = document.getElementById('dueDateInput');
+            const taskText = taskInput.value.trim();
+            const dueDate = dueDateInput.value ? new Date(dueDateInput.value).toLocaleString() : '';
+            if (taskText !== '') {
+                addTask(taskText, dueDate);
+                taskInput.value = '';
+                dueDateInput.value = '';
+            }
+        });
+
+        // Add task when pressing Enter
+        const taskInput = document.getElementById('taskInput');
+        taskInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                const dueDateInput = document.getElementById('dueDateInput');
+                const taskText = taskInput.value.trim();
+                const dueDate = dueDateInput.value ? new Date(dueDateInput.value).toLocaleString() : '';
+                if (taskText !== '') {
+                    addTask(taskText, dueDate);
+                    taskInput.value = '';
+                    dueDateInput.value = '';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
